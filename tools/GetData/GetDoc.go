@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func getDoc(url string) (*goquery.Document,error){
+func GetDoc(url string) (*goquery.Document,error){
 	client:=new(http.Client)
 	req,err:=http.NewRequest("GET",url,nil)
 	req.Header.Add("user-agent","Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.2 Safari/605.1.15")

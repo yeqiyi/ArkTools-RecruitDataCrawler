@@ -6,7 +6,7 @@ import (
 )
 
 func Test(t *testing.T){
-	doc,err:= getDoc(url)
+	doc,err:= GetDoc(url)
 	if err!=nil{
 		t.Error("failed")
 	}
@@ -17,7 +17,7 @@ func Test(t *testing.T){
 	 */
 
 	T:=GetAllTags(doc)
-	for k,v:=range T.tags{
+	for k,v:=range T.Tags{
 		fmt.Println(k,v)
 	}
 

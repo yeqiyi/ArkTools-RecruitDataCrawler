@@ -19,32 +19,32 @@ const (
 type CharList []Character
 
 type RecruitData struct{
-	charlist CharList
+	Charlist CharList
 	TagtoChar map[string][]int
 }
 
 type Character struct {
-	id int
-	cn_name   string //名称（中）
-	en_name   string //名称（英）
-	jp_name   string //名称（日）
-	avatarUrl string //头像url
-	sex       string //干员性别
-	msg       string //干员信息
-	more_msg  string //附加信息
-	approach string //获取方式
-	tags []string //标签
-	class string//职阶
-	star int //星级
-	ori_hp int //初始生命力
-	ori_atk int //初始攻击力
-	ori_def int //初始物抗
-	ori_res int //初始法抗
-	ori_dt string //再部署时间
-	cost string//部署费用
-	ori_block string//阻挡
-	ori_cd string//攻击间隔
-	birthplace string//干员出生地
+	Id int
+	Cn_name   string //名称（中）
+	En_name   string //名称（英）
+	Jp_name   string //名称（日）
+	AvatarUrl string //头像url
+	Sex       string //干员性别
+	Msg       string //干员信息
+	More_msg  string //附加信息
+	Approach string //获取方式
+	Tags []string //标签
+	Class string//职阶
+	Star int //星级
+	Ori_hp int //初始生命力
+	Ori_atk int //初始攻击力
+	Ori_def int //初始物抗
+	Ori_res int //初始法抗
+	Ori_dt string //再部署时间
+	Cost string//部署费用
+	Ori_block string//阻挡
+	Ori_cd string//攻击间隔
+	Birthplace string//干员出生地
 }
 //获取所有干员信息
 func (rd *RecruitData)getAllChar(dom *goquery.Document){
@@ -57,71 +57,71 @@ func (rd *RecruitData)getAllChar(dom *goquery.Document){
 			switch attr.Key {
 			case "data-sort_id":
 				if id,err:=strconv.Atoi(TrimComma(attr.Val));err==nil{
-					char.id=id
+					char.Id=id
 				}else{
 					log.Warn("type transform failed:",err)
 				}
 			case "data-icon":
-				char.avatarUrl=attr.Val
+				char.AvatarUrl="http:"+attr.Val
 			case "data-cn":
-				char.cn_name=attr.Val
+				char.Cn_name=attr.Val
 			case "data-en":
-				char.en_name=attr.Val
+				char.En_name=attr.Val
 			case "data-jp":
-				char.jp_name=attr.Val
+				char.Jp_name=attr.Val
 			case "data-sex":
-				char.sex=attr.Val
+				char.Sex=attr.Val
 			case "data-des":
-				char.msg=attr.Val
+				char.Msg=attr.Val
 			case "data-moredes":
-				char.more_msg=attr.Val
+				char.More_msg=attr.Val
 			case "data-tag":
-				char.tags=strings.Split(attr.Val," ")
+				char.Tags=strings.Split(attr.Val," ")
 			case "data-class":
-				char.class=attr.Val
+				char.Class=attr.Val
 			case "data-rarity":
 				if star,err:=strconv.Atoi(attr.Val);err==nil{
-					char.star=star+1
+					char.Star=star+1
 				}else{
 					log.Warn("type transform failed:",err)
 				}
 			case "data-ori-hp":
 				if hp,err:=strconv.Atoi(TrimComma(attr.Val));err==nil{
-					char.ori_hp=hp
+					char.Ori_hp=hp
 				}else{
 					log.Warn("type transform failed:",err)
 				}
 			case "data-ori-atk":
 				if atk,err:=strconv.Atoi(TrimComma(attr.Val));err==nil{
-					char.ori_atk=atk
+					char.Ori_atk=atk
 				}else{
 					log.Warn("type transform failed:",err)
 				}
 			case "data-ori-def":
 				if def,err:=strconv.Atoi(TrimComma(attr.Val));err==nil{
-					char.ori_def=def
+					char.Ori_def=def
 				}else{
 					log.Warn("type transform failed:",err)
 				}
 			case "data-ori-res":
 				if res,err:=strconv.Atoi(TrimComma(attr.Val));err==nil{
-					char.ori_res=res
+					char.Ori_res=res
 				}else{
 					log.Warn("type transform failed:",err)
 				}
 			case "data-ori-dt":
-				char.ori_dt=attr.Val
+				char.Ori_dt=attr.Val
 			case "data-ori-dc":
-				char.cost=attr.Val
+				char.Cost=attr.Val
 			case "data-ori-block":
-				char.ori_block=attr.Val
+				char.Ori_block=attr.Val
 			case "data-ori-cd":
-				char.ori_cd=attr.Val
+				char.Ori_cd=attr.Val
 			case "data-ori-birthplace":
-				char.birthplace=attr.Val
+				char.Birthplace=attr.Val
 			}
 		}
-		rd.charlist=append(rd.charlist,char)
+		rd.Charlist=append(rd.Charlist,char)
 		//fmt.Println("------")
 	}
 }
@@ -129,10 +129,9 @@ func (rd *RecruitData)getAllChar(dom *goquery.Document){
 
 func (rd *RecruitData)BuildTagMap(){
 	//rd.TagtoChar=make(map[string][]int)
-	for _,char :=range rd.charlist{
-		for _,tag:=range char.tags{
-			rd.TagtoChar[tag]=append(rd.TagtoChar[tag],char.id)
-
+	for _,char :=range rd.Charlist{
+		for _,tag:=range char.Tags{
+			rd.TagtoChar[tag]=append(rd.TagtoChar[tag],char.Id)
 		}
 	}
 }
