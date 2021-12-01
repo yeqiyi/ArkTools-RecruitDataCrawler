@@ -48,12 +48,11 @@ func main() {
 	if err != nil {
 		log.Error(err)
 	}
-	/*
 	var tags Tags = GetAllTags(doc)
 	err = TagtoJson(tags)
 	if err != nil {
 		log.Error(err)
-	}*/
+	}
 	rd:=GetRecruitData(doc)
 	err = RDtoJson(rd)
 	if err!=nil{
