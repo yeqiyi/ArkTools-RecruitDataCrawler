@@ -14,12 +14,13 @@ var url=GetUrl(Char_List)
 const (
 	Pos1 = "近战位"
 	Pos2 = "远程位"
+	Pub="公开招募"
 )
 
 type CharList []Character
 
 type RecruitData struct{
-	Charlist CharList
+	Charlist map[int]Character
 	TagtoChar map[string][]int
 }
 
@@ -32,7 +33,7 @@ type Character struct {
 	Sex       string //干员性别
 	Msg       string //干员信息
 	More_msg  string //附加信息
-	Approach string //获取方式
+	Approach int //获取方式
 	Tags []string //标签
 	Class string//职阶
 	Star int //星级
@@ -119,9 +120,15 @@ func (rd *RecruitData)getAllChar(dom *goquery.Document){
 				char.Ori_cd=attr.Val
 			case "data-ori-birthplace":
 				char.Birthplace=attr.Val
+			case "data-approach":
+				if true==strings.Contains(attr.Val,Pub){
+					char.Approach=1
+				}else{
+					char.Approach=0
+				}
 			}
 		}
-		rd.Charlist=append(rd.Charlist,char)
+		rd.Charlist[char.Id]=char
 		//fmt.Println("------")
 	}
 }
@@ -146,7 +153,7 @@ func TrimComma(str string) string{
 }
 
 func GetRecruitData(doc *goquery.Document)RecruitData{
-	rd:=RecruitData{TagtoChar: make(map[string][]int)}
+	rd:=RecruitData{Charlist:make(map[int]Character),TagtoChar: make(map[string][]int)}
 	rd.getAllChar(doc)
 	rd.BuildTagMap()
 	return rd
