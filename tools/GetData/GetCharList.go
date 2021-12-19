@@ -33,6 +33,7 @@ type Character struct {
 	Sex       string //干员性别
 	Msg       string //干员信息
 	More_msg  string //附加信息
+	Position string//部署位
 	Approach int //获取方式
 	Tags []string //标签
 	Class string//职阶
@@ -71,7 +72,7 @@ func (rd *RecruitData)getAllChar(dom *goquery.Document){
 			case "data-jp":
 				char.Jp_name=attr.Val
 			case "data-sex":
-				char.Sex=attr.Val
+				char.Sex=attr.Val+"性干员"
 			case "data-des":
 				char.Msg=attr.Val
 			case "data-moredes":
@@ -126,13 +127,26 @@ func (rd *RecruitData)getAllChar(dom *goquery.Document){
 				}else{
 					char.Approach=0
 				}
+			case "data-position":
+				char.Position=attr.Val
 			}
+		}
+		char.Tags=append(char.Tags,[]string{char.Class,char.Position,char.Sex}...)
+		if char.Star==6||char.Star==5{
+			char.Tags=append(char.Tags,qualification(char.Star))
 		}
 		rd.Charlist[char.Id]=char
 		//fmt.Println("------")
 	}
 }
 
+func qualification(star int)string {
+	if star == 6 {
+		return "高级资深干员"
+	} else {
+		return "资深干员"
+	}
+}
 
 func (rd *RecruitData)BuildTagMap(){
 	//rd.TagtoChar=make(map[string][]int)
